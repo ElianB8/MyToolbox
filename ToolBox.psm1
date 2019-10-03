@@ -36,4 +36,44 @@ function Get-PublicIp{
     Invoke-WebRequest -Uri $Uri -DisableKeepAlive | Select-Object -ExpandProperty Content
 }
 
-Export-ModuleMember -Function Get-PublicIp
+function New-GenerateHTML {
+
+    <#
+	.SYNOPSIS
+	Generate HTML file for PSHTML
+	
+	.DESCRIPTION
+	Generate HTML file for PSHTML
+	
+	.PARAMETER Path
+    Path of Output file
+    
+    .PARAMETER Variable
+    Variable to output on HTML file
+
+    .PARAMETER Open
+    Open file in navigator after generation
+
+    .EXAMPLE
+    New-GenerateHTML -Path C:\index.html -Variable $Html
+    Create html file on output path with variable content.
+    #>
+
+    [CmdletBinding()]
+    param(
+        [Parameter()]
+        [string]$Path,
+        [string]$Variable,
+        [switch]$Open
+
+
+    )
+
+    $Variable | Out-File -FilePath $Path -Encoding utf8
+    if ($Open -eq $true) {
+        Start $Path
+    }
+
+}
+
+Export-ModuleMember -Function Get-PublicIp , New-GenerateHTML
